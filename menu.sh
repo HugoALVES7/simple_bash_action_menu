@@ -33,12 +33,6 @@ handle_interrupt() {
 }
 trap handle_interrupt SIGINT
 
-run_as_www_data() {
-    # For commands that need to be run as www-data (e.g., web server actions)
-    chown -R www-data:www-data /var/www/
-    sudo -u www-data bash -c "$1"
-}
-
 ########################
 ##### MENU OPTIONS #####
 ########################
@@ -49,6 +43,16 @@ show_options() {
     echo "  ${YELLOW}3${RESET} - Action 3 (example)"
     echo "      ------------"
     echo "  ${YELLOW}0${RESET} - ${RED}Exit${RESET}"
+}
+
+############################
+##### COMMON FUNCTIONS #####
+############################
+
+run_as_www_data() {
+    # For commands that need to be run as www-data (e.g., web server actions)
+    chown -R www-data:www-data /var/www/
+    sudo -u www-data bash -c "$1"
 }
 
 ############################
@@ -77,12 +81,12 @@ main_menu() {
         echo -n -e "${RESET}"
         echo -e "\n"
 
+        clear
         case "$choice" in
             1) action_1 ;;
             2) action_2 ;;
             3) action_3 ;;
             0)
-                clear
                 echo -e "${GREEN}Script ended. See you soon, ${current_user}.${RESET}"
                 exit 0
                 ;;
